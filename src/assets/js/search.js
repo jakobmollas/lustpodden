@@ -1,8 +1,9 @@
 // src/assets/js/search.js
 (async function () {
     async function loadEpisodes() {
-        const res = await fetch('./episodes.json');
-        if (!res.ok) throw new Error('Could not load episodes.json');
+        const EPISODES_URL = "{{ '/episodes.json' | url }}"; // Eleventy prepends path prefix
+        const res = await fetch(EPISODES_URL);
+        if (!res.ok) throw new Error('Could not load ' + EPISODES_URL);
         return res.json();
     }
 
