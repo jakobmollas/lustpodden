@@ -1,7 +1,7 @@
 // src/assets/js/search.js
 (async function () {
     async function loadEpisodes() {
-        const EPISODES_URL = "episodes.json'"; // Eleventy prepends path prefix
+        const EPISODES_URL = "https://jakobmollas.github.io/lustpodden/episodes.json'"; 
         const res = await fetch(EPISODES_URL);
         if (!res.ok) throw new Error('Could not load ' + EPISODES_URL);
         return res.json();
