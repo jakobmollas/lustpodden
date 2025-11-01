@@ -43,7 +43,7 @@ fetchAndWrite().catch(err => {
 function normalizeText(text) {
   if (!text) return '';
   return text
-    .replace(/\u00A0/g, '')             // non-breaking space → yeet
+    .replace(/\u00A0/g, ' ')             // non-breaking space → normal space
     .replace(/\r\n/g, '\n')             // normalize CRLF
     .replace(/\n+/g, '<br>')            // convert one or more newlines → single <br>
     .replace(/(<br>\s*){2,}/g, '<br>')  // collapse multiple <br> in a row → one <br>
