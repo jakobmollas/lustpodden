@@ -1,7 +1,7 @@
 // src/assets/js/search.js
 (async function () {
     async function loadEpisodes() {
-        const res = await fetch('/episodes.json');
+        const res = await fetch('./episodes.json');
         if (!res.ok) throw new Error('Could not load episodes.json');
         return res.json();
     }
