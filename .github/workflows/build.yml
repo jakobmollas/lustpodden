@@ -1,0 +1,24 @@
+name: Build and Deploy Podcast Site
+
+on:
+  schedule:
+    - cron: '30 0 * * 2'   # every Tuesday at 00:30 UTC
+  workflow_dispatch: # allow manual runs
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: node scripts/fetch-rss.js
+      - run: npx @11ty/eleventy
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
