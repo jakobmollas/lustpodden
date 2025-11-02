@@ -22,4 +22,4 @@ npm run build
 Use for example Live Server (5) to serve up the data:
 https://marketplace.visualstudio.com/items?itemName=yandeu.five-server
 
-# open http://127.0.0.1:5500/src/
+open http://127.0.0.1:5500/src/
