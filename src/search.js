@@ -19,7 +19,8 @@
         <div class="card-body">
             <h5 class="card-title"><a href="${ep.link}" target="_blank" rel="noopener">${ep.title}</a></h5>
             <h6 class="card-subtitle mb-2 text-muted">${ep.pubDate || ''} (${ep.durationMinutes} minutes)</h6>
-            <p class="card-text">${(ep.description || '')}</p>    
+            <a href="${ep.spotify}" class="card-link">${ep.spotify}</a>
+            <p class="card-text">${(ep.description || '')}</p>
         </div>
     </div>
 </div>
