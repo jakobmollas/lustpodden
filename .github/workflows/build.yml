@@ -17,6 +17,11 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: node fetch-rss.js  # Download and process podcast RSS feed
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_SHOW_ID: ${{ secrets.SPOTIFY_SHOW_ID }}
+          PODBEAN_FEED_URL: ${{ secrets.PODBEAN_FEED_URL }}
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

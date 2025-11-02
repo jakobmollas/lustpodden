@@ -7,6 +7,8 @@
         "build": "node fetch-rss.js"
     },
     "dependencies": {
+        "dotenv": "^17.2.3",
+        "node-fetch": "^2.7.0",
         "rss-parser": "^3.13.0"
     }
 }

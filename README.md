@@ -23,3 +23,36 @@ Use for example Live Server Five to serve up the data:
 https://marketplace.visualstudio.com/items?itemName=yandeu.five-server
 
 Open http://127.0.0.1:5500/src/ to see the output.
+
+## Spotify API Integration
+Since we want to get direct links to episodes hosted by Spotify, we need to interact with the Spotify API.
+Unfortunately we cannot construct links programmatically since spotify uses opaque perma links.
+
+### Authentication
+```
+POST https://accounts.spotify.com/api/token<br>
+Content-type: application/x-www-form-urlencoded
+
+Payload:
+* grant_type: client_credentials
+* client_id: ...
+* client_secret: ...
+```
+
+Secrets and variables are stored as Github Repo Secrets (for Actions)
+
+### Find Show Details
+```
+GET https://api.spotify.com/v1/search?q=Lustpodden&type=show
+Auth: Bearer token
+```
+
+In our case, at the time of writing the id is: `4bCocNmxcDEbbq4KZ96Lm0`
+
+### Get Show Episodes
+```
+GET https://api.spotify.com/v1/shows/4bCocNmxcDEbbq4KZ96Lm0/episodes?offset=0&limit=50
+Auth: Bearer token
+```
+
+Max limit is 50
