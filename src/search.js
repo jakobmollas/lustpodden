@@ -1,23 +1,28 @@
 (async function () {
     async function loadEpisodes() {
-        const EPISODES_URL = "episodes.json"; 
-        const res = await fetch(EPISODES_URL);
-        if (!res.ok) throw new Error('Could not load ' + EPISODES_URL);
+        const episodeFilename = "episodes.json"; 
+        const res = await fetch(episodeFilename);
+        if (!res.ok) 
+            throw new Error('Could not load ' + episodeFilename);
+
         return res.json();
     }
 
     function render(list) {
         const out = document.getElementById('results');
-        if (!out) return;
+        if (!out)
+            return;
+
         if (!list || list.length === 0) {
             out.innerHTML = '<div class="col-12">No results</div>';
             return;
         }
+
         out.innerHTML = list.map(ep => `
 <div class="col-12 col-md-6 mb-3">
     <div class="card h-100">
         <div class="card-body">
-            <h5 class="card-title"><a href="${ep.link}" target="_blank" rel="noopener">${ep.title}</a></h5>
+            <h5 class="card-title"><a href="${ep.link}">${ep.title}</a></h5>
             <h6 class="card-subtitle mb-2 text-muted">${ep.pubDate || ''} (${ep.durationMinutes} minutes)</h6>
             <a href="${ep.spotify}" class="card-link">${ep.spotify}</a>
             <p class="card-text">${(ep.description || '')}</p>
@@ -47,12 +52,14 @@
             useExtendedSearch: true       // Enables operators like '="' (exact match)
         });
 
-        const input = document.getElementById('search-input');
-        input.addEventListener('input', (e) => {
-            const q = e.target.value.trim();
-            if (!q) return render(episodes);
-            const res = fuse.search(q).map(r => r.item);
-            render(res);
+        const serachInput = document.getElementById('search-input');
+        serachInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            if (!query)
+                return render(episodes);
+
+            const results = fuse.search(query).map(r => r.item);
+            render(results);
         });
     } catch (err) {
         console.error(err);

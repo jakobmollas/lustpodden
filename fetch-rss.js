@@ -1,4 +1,3 @@
-// // scripts/fetch-rss.js
 import Parser from 'rss-parser';
 import { writeFileSync } from 'fs';
 import fetch from 'node-fetch';
@@ -28,54 +27,56 @@ async function fetchSpotifyToken() {
 }
 
 async function fetchSpotifyEpisodes(showId, token) {
-  const all = [];
-  let url = `https://api.spotify.com/v1/shows/${showId}/episodes?limit=50`;
-  
-  
-  while (url) {
-    console.log(`Getting Spotify episodes from '${url}'`);
+    const episodes = [];
+    let url = `https://api.spotify.com/v1/shows/${showId}/episodes?limit=50`;
 
-    const res = await fetch(url, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error(`Spotify API error: ${res.status}`);
-    const data = await res.json();
-    all.push(...data.items);
-    url = data.next; // next page, if any
-  }
-  return all.map(ep => ({
-    title: ep.name.trim(),
-    link: ep.external_urls.spotify
-  }));
+    while (url) {
+        console.log(`Getting Spotify episodes from '${url}'`);
+
+        const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!res.ok)
+            throw new Error(`Spotify API error: ${res.status}`);
+
+        const data = await res.json();
+        episodes.push(...data.items);
+        url = data.next; // next page, if any
+    }
+
+    return episodes.map(ep => ({
+        title: ep.name.trim(),
+        link: ep.external_urls.spotify
+    }));
 }
 
 async function fetchAndWrite() {
-  console.log('Fetching RSS:', FEED_URL);
-  const feed = await parser.parseURL(FEED_URL);
-  console.log('Feed title:', feed.title);
+    console.log('Fetching RSS Feed: ', FEED_URL);
+    const feed = await parser.parseURL(FEED_URL);
+    console.log('Feed title: ', feed.title);
 
-  // 1️⃣ Authenticate Spotify API
-  const token = await fetchSpotifyToken();
-  const showId = process.env.SPOTIFY_SHOW_ID;
-  console.log('Fetching Spotify episodes for show:', showId);
-  const spotifyEpisodes = await fetchSpotifyEpisodes(showId, token);
+    // Authenticate Spotify API
+    const token = await fetchSpotifyToken();
+    const showId = process.env.SPOTIFY_SHOW_ID;
 
-  // 2️⃣ Build normalized list
-  const episodes = feed.items.map(item => {
-    const title = item.title?.trim() || '';
-    const spotifyMatch = spotifyEpisodes.find(s => s.title === title);
-    return {
-      title,
-      link: item.link || '',
-      spotify: spotifyMatch ? spotifyMatch.link : '',
-      pubDate: new Date(item.pubDate).toISOString().split('T')[0],
-      description: normalizeText(item.content || ''),
-      durationMinutes: Math.floor((item.itunes?.duration || 0) / 60)
-    };
-  });
+    // Fetch Spotify episodes
+    console.log('Fetching Spotify episodes for show:', showId);
+    const spotifyEpisodes = await fetchSpotifyEpisodes(showId, token);
 
-  writeFileSync(OUT, JSON.stringify(episodes, null, 2));
-  console.log(`Wrote ${episodes.length} episodes to ${OUT}`);
+    // Build full pepisode list
+    const episodes = feed.items.map(item => {
+        const title = item.title?.trim() || '';
+        const spotifyMatch = spotifyEpisodes.find(s => s.title === title);
+        return {
+            title,
+            link: item.link || '',
+            spotify: spotifyMatch ? spotifyMatch.link : '',
+            pubDate: new Date(item.pubDate).toISOString().split('T')[0],
+            description: normalizeText(item.content || ''),
+            durationMinutes: Math.floor((item.itunes?.duration || 0) / 60)
+        };
+    });
+
+    writeFileSync(OUT, JSON.stringify(episodes, null, 2));
+    console.log(`Wrote ${episodes.length} episodes to ${OUT}`);
 }
 
 fetchAndWrite().catch(err => {
