@@ -18,7 +18,6 @@ async function fetchAndWrite() {
         link: item.link || '',
         pubDate: new Date(item.pubDate).toISOString().split('T')[0],
         description: normalizeText(item.content || ''),
-        duration: item.itunes?.duration || null,
         durationMinutes: Math.floor((item.itunes?.duration || 0) / 60)  // duration = seconds
 
         // Enable this if we need tags

@@ -1,5 +1,5 @@
 node_modules/
-_site/
+src/episodes.json
 .DS_Store
 *.log
 .env
