@@ -3,7 +3,7 @@ import Parser from 'rss-parser';
 import { writeFileSync } from 'fs';
 
 const FEED_URL = 'https://feed.podbean.com/lustpodden/feed.xml';
-const OUT = './_data/episodes.json';
+const OUT = './src/episodes.json';
 
 const parser = new Parser();
 
@@ -13,7 +13,7 @@ async function fetchAndWrite() {
     console.log('Feed title:', feed.title);
 
     const episodes = feed.items.map((item, idx) => ({
-        // id: item.guid || item.link || `ep-${idx}`,
+        // Add/modify to suit the needs
         title: item.title || '',
         link: item.link || '',
         pubDate: new Date(item.pubDate).toISOString().split('T')[0],

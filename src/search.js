@@ -1,12 +1,10 @@
-// src/assets/js/search.js
 (async function () {
     async function loadEpisodes() {
-        const EPISODES_URL = "https://jakobmollas.github.io/lustpodden/episodes.json"; 
+        const EPISODES_URL = "episodes.json"; 
         const res = await fetch(EPISODES_URL);
         if (!res.ok) throw new Error('Could not load ' + EPISODES_URL);
         return res.json();
     }
-
 
     function render(list) {
         const out = document.getElementById('results');
@@ -17,13 +15,13 @@
         }
         out.innerHTML = list.map(ep => `
 <div class="col-12 col-md-6 mb-3">
-<div class="card h-100">
-<div class="card-body">
-    <h5 class="card-title"><a href="${ep.link}" target="_blank" rel="noopener">${ep.title}</a></h5>
-    <h6 class="card-subtitle mb-2 text-muted">${ep.pubDate || ''} (${ep.durationMinutes} minutes)</h6>
-    <p class="card-text">${(ep.description || '')}</p>    
-</div>
-</div>
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title"><a href="${ep.link}" target="_blank" rel="noopener">${ep.title}</a></h5>
+            <h6 class="card-subtitle mb-2 text-muted">${ep.pubDate || ''} (${ep.durationMinutes} minutes)</h6>
+            <p class="card-text">${(ep.description || '')}</p>    
+        </div>
+    </div>
 </div>
 `).join('');
     }
@@ -32,12 +30,7 @@
         const episodes = await loadEpisodes();
         render(episodes);
 
-        // const fuse = new Fuse(episodes, {
-        //     keys: ['title', 'summary', 'description', 'tags'],
-        //     threshold: 0.35,
-        //     includeMatches: true
-        // });
-
+        // Configure search parameters
         const fuse = new Fuse(episodes, {
             keys: [
                 { name: 'title', weight: 0.5 },

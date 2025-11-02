@@ -16,11 +16,10 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: node scripts/fetch-rss.js
-      - run: npx @11ty/eleventy
+      - run: node fetch-rss.js  # Download and process podcast RSS feed
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _site
+          publish_dir: src
           publish_branch: gh-pages
-          force_orphan: true
+          force_orphan: true  # Start with clean slate
