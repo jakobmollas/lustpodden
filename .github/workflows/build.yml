@@ -2,7 +2,7 @@ name: Build and Deploy Podcast Site
 
 on:
   schedule:
-    - cron: '30 0 * * 2'   # every Tuesday at 00:30 UTC
+    - cron: '30 23 * * *'   # every day at 23:30 UTC
   workflow_dispatch: # allow manual runs
   push:
     branches: [ main ]
