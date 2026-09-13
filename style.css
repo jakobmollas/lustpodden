@@ -1,0 +1,26 @@
+/* src/assets/css/style.css */
+/* body { background: #f8f9fa; } */
+/* .card { border: none; } */
+
+.card {
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color-translucent);
+}
+
+.card h5 {
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.card-text {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: ellipsis;
+  display: block;
+}
